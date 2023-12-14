@@ -6,12 +6,11 @@ import Videocard from './Videocard'
 function View() {
   return (
     <>
-    <Row>
+    <Row className='mx-auto '>
       <Col sm={12} md={6} lg={4} xl={3}>
      <Videocard/>
       </Col>
     </Row>
-    kk
     </>
   )
 }

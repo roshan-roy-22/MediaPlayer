@@ -18,11 +18,11 @@ function Home() {
         </Link>
       </div>
       <div className="container-fluid w-100 mt-3 mb-3 row">
-        <div className="all-videos col-lg-6">
+        <div className="all-videos col-lg-9">
           <h3>All uploaded videos</h3>
           <View/>
         </div>
-        <div className="category col-lg-6">
+        <div className="category col-lg-3">
           <Category/>
         </div>
       </div>

@@ -47,7 +47,7 @@ function LandingPage() {
 
           <Card style={{ width: "22rem" }}>
             <Card.Img
-              style={{ width: "400px", height: "400px" }}
+              style={{ width: "350px", height: "400px" }}
               variant="top"
               src="https://i.gifer.com/Z23N.gif"
             />
@@ -101,7 +101,7 @@ function LandingPage() {
         <div className="col-lg-1"></div>
         <div className="col-lg-6">
           <iframe
-            width="688"
+            width="588"
             height="387"
             src="https://www.youtube.com/embed/IqwIOlhfCak"
             title="LEO - Badass Lyric | Thalapathy Vijay | Lokesh Kanagaraj | Anirudh Ravichander"

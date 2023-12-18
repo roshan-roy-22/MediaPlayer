@@ -12,7 +12,7 @@ function Videocard() {
       <Card>
         <Card.Img
           onClick={handleShow}
-          height={"200px"}
+          height={"300px"}
           variant="top"
           src="https://m.media-amazon.com/images/M/MV5BMDQwOTI3NTMtZjA0My00M2E3LThmODUtODdiNTQ3ZjNiNGE3XkEyXkFqcGdeQXVyNTM2NTg3Nzg@._V1_.jpg"
         />

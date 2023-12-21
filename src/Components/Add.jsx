@@ -2,8 +2,9 @@ import React,{useState} from 'react'
 import { Button,Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { uploadNewVideoAPI } from '../Services/allAPI';
 
-function Add() {
+function Add({}) {
   const [uploadVideo,setUploadVideo]=useState({
     id:"",caption:"",url:"",link:""
   })
@@ -11,19 +12,40 @@ function Add() {
   console.log(uploadVideo);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  
   const getYoutubeEmbedLink=(e)=>{
     const {value}=e.target
     if(value.includes("v=")){
       let vID=value.split("v=")[1].slice(0,11)
       console.log(`https://www.youtube.com/embed/${vID}`);
-      setUploadVideo(`{...uploadVideo,link:https://www.youtube.com/embed/${vID}}`)
+      setUploadVideo({...uploadVideo,link:`https://www.youtube.com/embed/${vID}`})
     }
     else{
       setUploadVideo({...uploadVideo,link:""})
     }
   }
-
+  const handleUpload= async ()=>{
+    const {id,caption,url,link}=uploadVideo
+    if(!id || !caption || !url || !link){
+      alert("Uploading form is incomplete.Please fill the form completely!!!")
+    }
+    else{
+      const result= await uploadNewVideoAPI(uploadVideo)
+      console.log(result);
+      if(result.status>=200 && result.status<3000){
+        // success
+        handleClose()
+        // reset uploadVideo
+        setUploadVideo({
+          id:"",caption:"",url:"",link:""
+        })
+        setUploadVideoResponse(result.data)
+      }
+      else{
+        alert(result.message)
+      }
+    }
+  }
   return (
     <>
     <div className="d-flex align-items-center">
@@ -69,7 +91,7 @@ function Add() {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="info" onClick={handleClose}>
+          <Button variant="info" onClick={handleUpload}>
             Upload
           </Button>
         </Modal.Footer>

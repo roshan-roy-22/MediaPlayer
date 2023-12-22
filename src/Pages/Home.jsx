@@ -16,7 +16,7 @@ function Home() {
           to="/history"
           style={{ textDecoration: "none", color: "white", fontSize: "20px" }}
         >
-          Watch history
+          Watch history <i class="fa-solid fa-clock-rotate-left"></i>
         </Link>
       </div>
       <div className="container-fluid w-100 mt-3 mb-3 row">

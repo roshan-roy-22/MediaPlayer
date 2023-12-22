@@ -26,9 +26,15 @@ function VideoCard({ video, setDeleteVideoResponse }) {
     await removeVideoAPI(id);
     setDeleteVideoResponse(true);
   };
+   
+  const dragStarted=(e,id)=>{
+    console.log("Drag started ... Video:"+id);
+    e.dataTransfer.setData("video",id)
+  }
+
   return (
     <>
-      <Card style={{ width: "15rem" }}>
+      <Card draggable onDragStart={e=>dragStarted(e,video?.id)} style={{ width: "15rem" }}>
         <Card.Img
           style={{ cursor: "pointer" }}
           onClick={handleShow}

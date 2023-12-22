@@ -38,9 +38,19 @@ export const removeHistoryAPI = async(id)=>{
 //add category
 
 export const addCategoryAPI = async(category)=>{
-    return await commonAPI("POST",`${SERVER_URL}/category/`,category)}
+    return await commonAPI("POST",`${SERVER_URL}/categories`,category)}
 
 //getAll category
 
+export const removeCategoryAPI=async (id)=>{
+    return await commonAPI("DELETE",`${SERVER_URL}/categories/${id}`)
+}
+
 export const getAllCategoryAPI = async()=>{
-    return await commonAPI("GET",`${SERVER_URL}/category/`,"")}
+    return await commonAPI("GET",`${SERVER_URL}/categories/`,"")
+}
+
+
+export const updateCategoryAPI = async (id,categoryDetails)=>{
+    return await commonAPI("PUT",`${SERVER_URL}/categories/${id}`,categoryDetails)
+}

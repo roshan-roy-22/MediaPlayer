@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, FloatingLabel, Form } from "react-bootstrap";
-import { addCategoryAPI, getAllCategoryAPI } from "../Services/allAPI";
+import {
+  addCategoryAPI,
+  getAVideoAPI,
+  getAllCategoryAPI,
+  removeCategoryAPI,
+  updateCategoryAPI,
+} from "../Services/allAPI";
 
 function Category() {
   const [allCategories, setAllCategories] = useState([]);
@@ -23,6 +29,8 @@ function Category() {
       const result = await addCategoryAPI({ categoryName, allVideos: [] });
       if (result.status >= 200 && result.status < 300) {
         handleClose();
+        setCategoryName("");
+        getAllCategory();
       } else {
         alert(result.message);
       }
@@ -30,6 +38,31 @@ function Category() {
       alert("Please fill the form completely");
     }
   };
+
+  const removeCategory = async (id) => {
+    await removeCategoryAPI(id);
+    getAllCategory();
+  };
+
+const dragOver =(e) =>{
+  console.log(`Video card is dragging over the category`);
+  e.preventDefault()
+}
+
+const videoDrop = async (e,categoryId)=>{
+  const videoId = e.dataTransfer.getData("videoId")
+  console.log("Video id:" +videoId + "dropped!! Inside the category"+categoryId);
+  const {data} = await getAVideoAPI(videoId)
+
+  const selectedCategory = allCategories.find(item=>item.id===categoryId)
+  selectedCategory.allVideos.push(data);
+  console.log(selectedCategory);
+  await updateCategoryAPI(categoryId,selectedCategory)
+  getAllCategory();
+}
+console.log(allCategories);
+
+
   return (
     <>
       <div className="d-grid">
@@ -39,10 +72,13 @@ function Category() {
       </div>
       {allCategories?.length > 0 ? (
         allCategories.map((category) => (
-          <div className="border rounded p-3 mt-2 ">
+          <div className="border rounded p-3 mt-2 " droppable="true" onDragOver={e=>dragOver(e)} onDrop={e=>videoDrop(e,category?.id)}>
             <div className="d-flex justify-content-between align-items-center">
               <h6>{category?.categoryName}</h6>
-              <button className="btn">
+              <button
+                onClick={() => removeCategory(category?.id)}
+                className="btn"
+              >
                 <i className="fa-solid fa-trash text-danger"></i>
               </button>
             </div>

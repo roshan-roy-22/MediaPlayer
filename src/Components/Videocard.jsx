@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, Modal } from "react-bootstrap";
 import { addVideoToHistoryAPI, removeVideoAPI } from "../Services/allAPI";
-function VideoCard({ video, setDeleteVideoResponse }) {
+function VideoCard({ video, setDeleteVideoResponse ,insideCategory}) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = async () => {
@@ -29,7 +29,7 @@ function VideoCard({ video, setDeleteVideoResponse }) {
    
   const dragStarted=(e,id)=>{
     console.log("Drag started ... Video:"+id);
-    e.dataTransfer.setData("video",id)
+    e.dataTransfer.setData("videoID",id)
   }
 
   return (
@@ -45,12 +45,14 @@ function VideoCard({ video, setDeleteVideoResponse }) {
         <Card.Body>
           <Card.Title className="d-flex justify-content-between align-items-center ">
             <h6>{video?.caption}</h6>
-            <button
-              onClick={() => removeVideo(video?.id)}
-              className="btn text-danger"
-            >
-              <i class="fa-solid fa-trash"></i>
-            </button>
+           {insideCategory?null:
+             <button
+             onClick={() => removeVideo(video?.id)}
+             className="btn text-danger"
+           >
+             <i class="fa-solid fa-trash"></i>
+           </button>
+           }
           </Card.Title>
         </Card.Body>
       </Card>

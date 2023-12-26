@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, FloatingLabel, Form } from "react-bootstrap";
+import { Modal, Button, FloatingLabel, Form, Row,Col ,Collapse} from "react-bootstrap";
 import {
   addCategoryAPI,
   getAVideoAPI,
@@ -7,6 +7,7 @@ import {
   removeCategoryAPI,
   updateCategoryAPI,
 } from "../Services/allAPI";
+import VideoCard from "./Videocard";
 
 function Category() {
   const [allCategories, setAllCategories] = useState([]);
@@ -14,6 +15,7 @@ function Category() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [open,setOpen] = useState(false)
 
   useEffect(() => {
     getAllCategory();
@@ -51,7 +53,7 @@ const dragOver =(e) =>{
 
 const videoDrop = async (e,categoryId)=>{
   const videoId = e.dataTransfer.getData("videoId")
-  console.log("Video id:" +videoId + "dropped!! Inside the category"+categoryId);
+  console.log("Video id:" +videoId + "dropped!! Inside the category:"+categoryId);
   const {data} = await getAVideoAPI(videoId)
 
   const selectedCategory = allCategories.find(item=>item.id===categoryId)
@@ -62,7 +64,10 @@ const videoDrop = async (e,categoryId)=>{
 }
 console.log(allCategories);
 
-
+const videoDragStarted =(e,videoId,categoryId)=>{
+  let dataShare={videoId,categoryId}
+  e.dataTransfer.setData("data",JSON.stringify(dataShare))
+}
   return (
     <>
       <div className="d-grid">
@@ -73,7 +78,7 @@ console.log(allCategories);
       {allCategories?.length > 0 ? (
         allCategories.map((category) => (
           <div className="border rounded p-3 mt-2 " droppable="true" onDragOver={e=>dragOver(e)} onDrop={e=>videoDrop(e,category?.id)}>
-            <div className="d-flex justify-content-between align-items-center">
+            <div onClick={()=>setOpen(!open)} className="d-flex justify-content-between align-items-center">
               <h6>{category?.categoryName}</h6>
               <button
                 onClick={() => removeCategory(category?.id)}
@@ -82,6 +87,17 @@ console.log(allCategories);
                 <i className="fa-solid fa-trash text-danger"></i>
               </button>
             </div>
+            <Collapse in={open}>
+            <Row>
+              {
+                category?.allVideos?.length>0?category?.allVideos.map(card=>(
+                  <Col sm={12} className='mb-2' draggable onDragStart={e=>videoDragStarted(e,card,id,category.id)}>
+                    <VideoCard video={card} insideCategory={true}/>
+                  </Col>
+                )):null
+              }
+            </Row>
+            </Collapse>
           </div>
         ))
       ) : (
